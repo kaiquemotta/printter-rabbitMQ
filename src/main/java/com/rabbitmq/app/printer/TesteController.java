@@ -1,4 +1,4 @@
-package com.rabbitmq.app;
+package com.rabbitmq.app.printer;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;

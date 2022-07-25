@@ -1,4 +1,4 @@
-package com.rabbitmq.app;
+package com.rabbitmq.app.fila;
 
 import java.time.LocalDateTime;
 

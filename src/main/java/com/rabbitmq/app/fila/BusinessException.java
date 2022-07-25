@@ -1,4 +1,4 @@
-package com.rabbitmq.app;
+package com.rabbitmq.app.fila;
 
 public class BusinessException extends Exception{
     public BusinessException(String message) {
