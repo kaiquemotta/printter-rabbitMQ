@@ -1,4 +1,4 @@
-package com.rabbitmq.app.printer;
+package com.rabbitmq.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +10,6 @@ public class PrinterConfig {
   
   @Bean
   public ThermalPrinter thermalPrinter() {
-    return new ThermalPrinter(145, true, "MyPrinter");
+    return new ThermalPrinter(1000, true, "EPSON");
   }
 }
