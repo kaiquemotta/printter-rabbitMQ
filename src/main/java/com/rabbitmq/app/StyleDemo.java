@@ -23,10 +23,69 @@ public class StyleDemo {
 	String linha = "";
 
 	public static void main(String[] args) throws IOException {
-		new StyleDemo().test();
+		new StyleDemo().impressoras();
 	}
 
-	public void test() throws IOException {
+	public void impressoras() throws IOException {
+		String json = json();
+		Gson gson = new Gson();
+		VendaDTOMessage venda = gson.fromJson(json, VendaDTOMessage.class);
+		PrintService printService = PrinterOutputStream.getPrintServiceByName("EPSON");
+		PrinterOutputStream printerOutputStream = new PrinterOutputStream(printService);
+		Date dataHoraAtual = new Date();
+		String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
+		String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
+		EscPos escpos = new EscPos(printerOutputStream);
+
+		escpos.getStyle().setBold(true);
+		escpos.getStyle().setFontName(FontName.Font_A_Default);
+		escpos.getStyle().setFontSize(FontSize._3, FontSize._3);
+		escpos.writeLF("  COZINHA : " + venda.getId());
+		escpos.getStyle().setBold(false);
+		escpos.getStyle().reset();
+
+		escpos.writeLF("________________________________________________");
+		escpos.getStyle().setBold(false);
+		escpos.writeLF("Data:" + data + "                  Hora: " + hora);
+		escpos.writeLF("________________________________________________");
+
+		escpos.getStyle().setBold(true);
+		escpos.getStyle().setFontSize(FontSize._2, FontSize._3);
+		escpos.writeLF("Qntd  Produto");
+		escpos.getStyle().reset();
+		escpos.writeLF("________________________________________________");
+
+		escpos.getStyle().setBold(true);
+		escpos.getStyle().setFontSize(FontSize._2, FontSize._3);
+		escpos.writeLF("");
+
+		venda.getItensVenda().get(2).setQuantidade("222");
+		for (ItemVendaDTOMessage i : venda.getItensVenda()) {
+			int tam = i.getQuantidade().length();
+			String line = " ";
+			line += i.getQuantidade();
+
+			if (tam == 4) {
+				line += "  ";
+			} else if (tam == 3) {
+				line += "  ";
+			} else if (tam == 2) {
+				line += "   ";
+			}
+			else if (tam ==1) {
+				line += "    ";
+			}
+
+			line += i.getProdutoNome().length() > 30 ? i.getProdutoNome().substring(0, 18) : i.getProdutoNome();
+			escpos.writeLF(line);
+			System.out.println(i.getProdutoNome().length());
+		}
+
+		escpos.feed(5).cut(EscPos.CutMode.FULL);
+		escpos.close();
+	}
+
+	public void comprovante() throws IOException {
 
 		String json = json();
 		Gson gson = new Gson();
